@@ -1,55 +1,53 @@
 import React from "react";
+import { 
+  Props, 
+  State, 
+  Model, 
+  ParamValue, 
+} from "../../utils/types";
 
-interface Param {
-  id: number;
-  name: string;
-  // type: 'string';
-}
+class ParamEditor extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
 
-interface ParamValue {
-  paramId: number;
-  value: string;
-}
+    const initialState: {[key: number]: string} = {};
 
-interface Model {
-  paramValues: ParamValue[];
-  // colors: string[];
-}
+    for (const paramValue of props.model.paramValues) {
+      initialState[paramValue.paramId] = paramValue.value;
+    }
 
-interface Props {
-  params: Param[];
-  model: Model;
-}
-
-class ParamEditor extends React.Component<Props> {
-  public state = {
-    model: this.props.model,
-    params: this.props.params,
-    editedParams: [],
-  };
+    this.state = {
+      values: initialState,
+    };
+  }
 
   public getModel = (): Model => {
-    return this.state.model;
+    const paramValues: ParamValue[] = [];
+
+    for (const key in this.state.values) {
+      paramValues.push({
+        paramId: Number(key),
+        value: this.state.values[key], 
+      });
+    }
+    return {
+      paramValues,
+      colors: [],
+    };
   };
 
-  public handleParamChange = (paramId: number, value: string) => {
-    const editedParams = this.state.editedParams.map((param) =>{
-      if (param === paramId) {
-        return {
-          paramId,
-          value,
-        };
+  private handleParamChange = (paramId: number, value: string): void => {
+    this.setState(prev => ({
+      values: {
+        ...prev.values,
+        [paramId]: value
       }
-      return param;
-    });
-    this.setState({
-      editedParams,
-    });
+    }));
   };
 
   public render() {
-    const { params, model } = this.props;
-    // const { editedParams } = this.state;
+    const { params } = this.props;
+    const { values } = this.state;
 
     return (
       <div>
@@ -58,7 +56,7 @@ class ParamEditor extends React.Component<Props> {
             <label>{param.name}</label>
             <input 
               type="text"
-              value={model.paramValues.find((value) => value.paramId === param.id)?.value}
+              value={values[param.id]}
               onChange={(e) => this.handleParamChange(param.id, e.target.value)}
               />
           </div>

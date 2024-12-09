@@ -1,15 +1,19 @@
-export const params = [
+import { Model, Param } from "./types";
+
+export const params: Param[] = [
   {
     "id": 1,
-    "name": "Назначение"
+    "name": "Назначение",
+    "type": 'string'
   },
   {
     "id": 2,
-    "name": "Длина"
+    "name": "Длина",
+    "type": 'string'
   }
 ];
 
-export const model = 
+export const model: Model = 
 {
   "paramValues": [
     {
@@ -20,5 +24,6 @@ export const model =
       "paramId": 2,
       "value": "макси"
     }
-  ] 
+  ],
+  "colors": [] 
 };
