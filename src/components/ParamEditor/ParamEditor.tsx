@@ -1,10 +1,30 @@
 import React from "react";
-import { 
-  Props, 
-  State, 
-  Model, 
-  ParamValue, 
-} from "../../utils/types";
+export interface Param {
+  id: number;
+  name: string;
+  type: 'string';
+}
+
+interface ParamValue {
+  paramId: number;
+  value: string;
+}
+
+export interface Model {
+  paramValues: ParamValue[];
+  colors: string[];
+}
+
+interface Props {
+  params: Param[];
+  model: Model;
+}
+
+interface State {
+  values: {
+    [key: number]: string,
+  }
+}
 
 class ParamEditor extends React.Component<Props, State> {
   constructor(props: Props) {
@@ -50,10 +70,10 @@ class ParamEditor extends React.Component<Props, State> {
     const { values } = this.state;
 
     return (
-      <div>
+      <div className="container">
         {params.map((param) => (
-          <div key={param.id}>
-            <label>{param.name}</label>
+          <div className="param" key={param.id}>
+            <label className="paramName">{param.name}</label>
             <input 
               type="text"
               value={values[param.id]}

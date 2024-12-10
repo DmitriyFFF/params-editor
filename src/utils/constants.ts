@@ -1,4 +1,4 @@
-import { Model, Param } from "./types";
+import { Model, Param } from "../components/ParamEditor/ParamEditor";
 
 export const params: Param[] = [
   {
